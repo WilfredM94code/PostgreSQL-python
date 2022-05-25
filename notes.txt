@@ -1,0 +1,103 @@
+-----------------------------------------------------------------
+--------------------------- PostgreSQL --------------------------
+-----------------------------------------------------------------
+
+PostgreSQL also known as Postgres, is a free and open-source relational database
+management system (RDBMS) emphasizing extensibility and SQL compliance
+
+It can be downloaded though the next link:
+
+https://www.enterprisedb.com/postgresql-tutorial-resources-training?uuid=db55e32d-e9f0-4d7c-9aef-b17d01210704&campaignId=7012J000001NhszQAC
+
+ITS FREEE AND OPEN SOURCE!
+
+Once installed it includes the 'SQL Shell (psql)'
+
+Once accessed it will ask for several options which can be those 
+suggestions between '[]'. It will also request for a passwor 
+which eventualy has to be defined by the user
+Once the 'postgres#' prompt message appears the next step is 
+to create a ROLE 
+
+-----------------------------------------------------------------
+------------------------ PostgreSQL ROLE ------------------------
+-----------------------------------------------------------------
+
+To create a role the next line must be typed on the PostgreSQL prompt:
+
+'CREATE ROLE username WITH LOGIN PASSWORD 'password';'
+Note that the password must be between ''
+
+Once created this role there has to be a setting which is required to be
+changed to allow role to create thatbases and it is setted using the next
+line of code
+
+'ALTER ROLE name WITH CREATEDB;'
+
+Note: The username has to be lowercase (preferably) or it can cause 
+confict
+
+Once created a new role is required to log in, for which is better to 
+restart the SQL Shell
+
+Obce loged in the available databses can be shown using the '\list' command
+
+-----------------------------------------------------------------
+----------------- PostgreSQL create a database ------------------
+-----------------------------------------------------------------
+
+To create a database in PSQL there can be used the SQL syntax.
+
+The ';' has to be at the end of every SQL statement
+
+'CREATE DATABASE company_sales;'
+
+Once executed this statement the creation can be checked by using the 
+'\list' command
+
+-----------------------------------------------------------------
+---------------- PostgreSQL managing a database -----------------
+-----------------------------------------------------------------
+
+To manage a database there has to be stablished a connection to it.
+To do so there can be used the next command
+
+'\c databasename'
+
+In this case there will be stablished a connection to the 'company_sales'
+databse
+
+-----------------------------------------------------------------
+----------------- PostgreSQL stored procedures ------------------
+-----------------------------------------------------------------
+
+Stored procedures are SQL queries that can be stored to be reused 
+whenever an user call it
+
+These procedures have to be written in the 'SQL Shell (psql)' prompt
+
+Note: while creating a procedure the only line meant to end with ';'
+is the one that ends the statement
+
+There will be created a procedure to simulate a case where a client
+wants to retrive a product back
+
+'CREATE PROCEDURE return_nodiscounted_item(INT,INT)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+UPDATE sales
+SET quantity = quantity - $2, order_total = order_total - price * $2
+WHERE prder_num = $1 AND discount = 0;
+COMMIT;
+END;
+$$;
+'
+
+To the use such procedure there has to be called using the next statement
+
+'CALL return_nodiscounted_item(order_number,quantity)'
+Where order_number has to be an actual 'order_number' within the table
+and a quantity related to such sale, in this case the line will be
+
+'CALL return_nodiscounted_item(5008,1)'
